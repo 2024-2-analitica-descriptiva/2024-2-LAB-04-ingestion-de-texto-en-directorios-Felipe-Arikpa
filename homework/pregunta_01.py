@@ -93,6 +93,7 @@ def pregunta_01():
     def create_dataset(directory):
 
         data = []
+        
         for sentiment in ['positive', 'neutral', 'negative']:
             sentiment_path = os.path.join(directory, sentiment)
             for filename in os.listdir(sentiment_path):
