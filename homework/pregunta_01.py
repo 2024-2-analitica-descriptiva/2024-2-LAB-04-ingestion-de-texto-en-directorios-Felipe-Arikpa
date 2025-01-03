@@ -87,6 +87,7 @@ def pregunta_01():
     output_directory = os.path.join('files', 'output')
     os.makedirs(output_directory, exist_ok=True)
 
+    directorios = sorted(directorios)
     train_directory = os.path.join(root_directory, directorios[1])
     test_directory = os.path.join(root_directory, directorios[0])
 
@@ -113,3 +114,6 @@ def pregunta_01():
     test_dataset.to_csv(os.path.join(output_directory, 'test_dataset.csv'), index=False)
 
     return print('Archivos creados correctamente')
+
+if __name__ == "__main__":
+    pregunta_01()
