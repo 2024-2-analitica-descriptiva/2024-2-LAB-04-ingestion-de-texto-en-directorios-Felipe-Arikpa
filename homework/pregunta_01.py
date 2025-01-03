@@ -71,3 +71,44 @@ def pregunta_01():
 
 
     """
+    import os
+    import zipfile
+    import pandas as pd
+
+    with zipfile.ZipFile('files/input.zip', 'r') as directory:
+        directory.extractall('files')
+
+    root_directory = os.path.join('files', 'input')
+    directorios = []
+
+    for file in os.listdir(root_directory):
+      directorios.append(file)
+
+    output_directory = os.path.join('files', 'output')
+    os.makedirs(output_directory, exist_ok=True)
+
+    train_directory = os.path.join(root_directory, directorios[1])
+    test_directory = os.path.join(root_directory, directorios[0])
+
+    def create_dataset(directory):
+
+        data = []
+        for sentiment in ['positive', 'neutral', 'negative']:
+            sentiment_path = os.path.join(directory, sentiment)
+            for filename in os.listdir(sentiment_path):
+                file_path = os.path.join(sentiment_path, filename)
+                with open(file_path, 'r', encoding='utf-8') as file:
+                    text = file.read().strip()
+                data.append({'phrase': text, 'target': sentiment})
+        
+        dataset = pd.DataFrame(data)
+
+        return dataset
+    
+    train_dataset = create_dataset(directory=train_directory)
+    test_dataset = create_dataset(directory=test_directory)
+
+    train_dataset.to_csv(os.path.join(output_directory, 'train_dataset.csv'), index=False)
+    test_dataset.to_csv(os.path.join(output_directory, 'test_dataset.csv'), index=False)
+
+    return print('Archivos creados correctamente')
